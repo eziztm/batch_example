@@ -1,0 +1,15 @@
+<users>
+    <user>
+        <username>user1@mail.com</username>
+        <roles>
+            <role>ADMIN</role>
+            <role>USER</role>
+        </roles>
+    </user>
+    <user>
+        <username>user2@mail.com</username>
+        <roles>
+            <role>USER</role>
+        </roles>
+    </user>
+</users>

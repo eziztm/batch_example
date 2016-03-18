@@ -32,7 +32,7 @@ import org.springframework.retry.backoff.FixedBackOffPolicy;
 @EnableBatchProcessing
 @Import(ApplicationConfig.class)
 public class CsvToXmlBatchConfig {
-    
+
     String FILENAME_INPUT = "football-clubs.csv";
     String FILENAME_OUTPUT = "output-football-clubs.xml";
 
@@ -57,23 +57,23 @@ public class CsvToXmlBatchConfig {
                 });
             }
         });
-        
+
         return reader;
     }
-    
+
     @Bean
     public ItemProcessor csvToXmlProcessor() {
         return new CsvToXmlProcessor();
     }
-    
+
     @Bean
     public ItemWriter<FootballClub> csvToXmlWriter() {
         StaxEventItemWriter<FootballClub> writer = new StaxEventItemWriter();
         writer.setResource(new FileSystemResource(FILENAME_OUTPUT));
         writer.setOverwriteOutput(true);
         writer.setRootTagName("clubs");
-        
-        XStreamMarshaller marshaller = new XStreamMarshaller();      
+
+        XStreamMarshaller marshaller = new XStreamMarshaller();
         Map<String, Class> aliases = new HashMap();
         aliases.put("club", FootballClub.class);
         marshaller.setAliases(aliases);
@@ -96,7 +96,7 @@ public class CsvToXmlBatchConfig {
                 .end()
                 .build();
     }
-    
+
     @Bean
     public Step csvToXmlStep(StepBuilderFactory stepBuilderFactory,
             @Qualifier("csvToXmlReader") ItemReader<FootballClub> reader,
@@ -106,7 +106,7 @@ public class CsvToXmlBatchConfig {
         // Wait 10 seconds before retrying
         FixedBackOffPolicy policy = new FixedBackOffPolicy();
         policy.setBackOffPeriod(10000L);
-        
+
         return stepBuilderFactory.get("csvToXmlStep")
                 .<FootballClub, FootballClub>chunk(20)
                 .faultTolerant()

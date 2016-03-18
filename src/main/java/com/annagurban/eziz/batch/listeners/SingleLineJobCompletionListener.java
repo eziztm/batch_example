@@ -22,7 +22,6 @@ public class SingleLineJobCompletionListener extends JobExecutionListenerSupport
 
             log.info("!!! JOB FINISHED! Time to verify the results");
 
-            
         }
     }
 
